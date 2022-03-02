@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/responsive/mobile_layout.dart';
 import 'package:instagram/responsive/responsive_layout.dart';
 import 'package:instagram/responsive/web_layout.dart';
+import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -29,13 +30,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Instagram Clone',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark()
-            .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-        home: const ResponsiveLayout(
-          mobileResponsive: MobileLayout(),
-          webResponsive: WebLayout(),
-        ));
+      title: 'Instagram Clone',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark()
+          .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
+      // home: const ResponsiveLayout(
+      //   mobileResponsive: MobileLayout(),
+      //   webResponsive: WebLayout(),
+      //    )
+      home: const LoginScreen(),
+    );
   }
 }
