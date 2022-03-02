@@ -3,23 +3,26 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/widgets/text_input_field.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _usernameController.dispose();
+    _bioController.dispose();
   }
 
   @override
@@ -42,6 +45,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: primaryColor,
                 height: 64,
               ),
+              Stack(
+                children: [
+                  const CircleAvatar(
+                    radius: 64,
+                    backgroundImage: NetworkImage(
+                        'https://scr.vn/wp-content/uploads/2020/11/avatar-instagram-trong.jpg.webp'),
+                  ),
+                  Positioned(
+                    bottom: 5,
+                    left: 90,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.add_a_photo_rounded),
+                    ),
+                  )
+                ],
+              ),
               const SizedBox(
                 height: 20,
               ),
@@ -56,6 +76,16 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               //textField password...
               TextInputField(
+                text: 'User name',
+                textEditingController: _usernameController,
+                textInputType: TextInputType.text,
+                isPass: true,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              //textField password...
+              TextInputField(
                 text: 'Password',
                 textEditingController: _passwordController,
                 textInputType: TextInputType.text,
@@ -64,11 +94,21 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 10,
               ),
+              //textField password...
+              TextInputField(
+                text: 'Enter Bio',
+                textEditingController: _bioController,
+                textInputType: TextInputType.text,
+                isPass: true,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               //button
               InkWell(
-                onTap: (){},
+                onTap: () {},
                 child: Container(
-                  child: const Text('Login'),
+                  child: const Text('SignUp'),
                   alignment: Alignment.center,
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -91,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text("Don't have an account?"),
                   ),
                   GestureDetector(
-                  onTap: (){},
+                    onTap: () {},
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: const Text(
