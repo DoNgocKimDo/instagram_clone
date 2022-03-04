@@ -1,7 +1,11 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_input_field.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -15,6 +19,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
+  Uint8List? _image;
 
   @override
   void dispose() {
@@ -25,9 +30,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _bioController.dispose();
   }
 
+  Future<void> selectImage() async {
+    Uint8List image = await pickImage(ImageSource.camera);
+    setState(() {
+      _image = image;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -47,16 +60,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               Stack(
                 children: [
-                  const CircleAvatar(
-                    radius: 64,
-                    backgroundImage: NetworkImage(
-                        'https://scr.vn/wp-content/uploads/2020/11/avatar-instagram-trong.jpg.webp'),
-                  ),
+                  _image != null
+                      ? CircleAvatar(
+                          radius: 64,
+                          backgroundImage: MemoryImage(_image!),
+                        )
+                      : const CircleAvatar(
+                          radius: 64,
+                          backgroundImage: NetworkImage(
+                              'https://scr.vn/wp-content/uploads/2020/11/avatar-instagram-trong.jpg.webp'),
+                        ),
                   Positioned(
                     bottom: 5,
                     left: 90,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: selectImage,
                       icon: const Icon(Icons.add_a_photo_rounded),
                     ),
                   )
@@ -79,7 +97,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 text: 'User name',
                 textEditingController: _usernameController,
                 textInputType: TextInputType.text,
-                isPass: true,
+                isPass: false,
               ),
               const SizedBox(
                 height: 10,
@@ -99,14 +117,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 text: 'Enter Bio',
                 textEditingController: _bioController,
                 textInputType: TextInputType.text,
-                isPass: true,
+                isPass: false,
               ),
               const SizedBox(
                 height: 10,
               ),
               //button
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  await AuthMethod().signUpMethod(
+                      email: _emailController.text,
+                      username: _usernameController.text,
+                      password: _passwordController.text,
+                      bio: _bioController.text,
+                      file: _image!);
+                },
                 child: Container(
                   child: const Text('SignUp'),
                   alignment: Alignment.center,
